@@ -1,0 +1,16 @@
+{
+    "name": "swarm-manifest-list",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node src/index.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "@ethersphere/bee-js": "^2.1.1",
+        "mantaray-js": "^1.0.3"
+    }
+}
