@@ -1,6 +1,11 @@
 const BeeJs = require('@ethersphere/bee-js')
 const MantarayJs = require('mantaray-js')
 
+/**
+ * The character `/`
+ */
+const INDEX_DOCUMENT_FORK_PREFIX = '47'
+
 class SwarmManifestList {
     /**
      * @param {BeeJs.Bee} bee
@@ -22,6 +27,32 @@ class SwarmManifestList {
         } catch {
             return false
         }
+    }
+
+    /**
+     * @param {string} hash Swarm hash
+     * @returns {Promise<string | null>} Path of the index document if set, or `null`
+     */
+    async getIndexDocument(hash) {
+        const data = await this.bee.downloadData(hash)
+        const node = new MantarayJs.MantarayNode()
+        node.deserialize(data)
+        if (!node.forks) {
+            return null
+        }
+        const fork = node.forks[INDEX_DOCUMENT_FORK_PREFIX]
+        if (!fork) {
+            return null
+        }
+        const metadataNode = fork.node
+        if (!metadataNode.IsWithMetadataType()) {
+            return null
+        }
+        const metadata = metadataNode.getMetadata
+        if (!metadata) {
+            return null
+        }
+        return metadata['website-index-document'] || null
     }
 
     /**
